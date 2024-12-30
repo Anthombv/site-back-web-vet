@@ -50,13 +50,7 @@ const Sidebar = () => {
             Usuario: <strong>{`${auth?.usuario}`}</strong>
           </p>
           <div className="flex flex-col justify-start items-center">
-            <Image
-              src="/logoempresa.jpeg"
-              alt="Picture of the author"
-              width={170}
-              height={170}
-              priority={false}
-            />
+            
             <div className="my-4 border-b border-gray-100 pb-4">
               <div>
                 {mostrarCarga && (

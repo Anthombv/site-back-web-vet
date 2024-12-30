@@ -8,7 +8,7 @@ export type TableContainerProps = {
   contentColor?: string;
 };
 
-export const TableContainer = styled.div<TableContainerProps>`
+ const TableContainer = styled.div<TableContainerProps>`
   .dx-treelist {
     font-size: 12px;
   }
@@ -53,3 +53,4 @@ export const TableContainer = styled.div<TableContainerProps>`
     border-color: ${theme.colors.blue};
   }
 `;
+export default TableContainer

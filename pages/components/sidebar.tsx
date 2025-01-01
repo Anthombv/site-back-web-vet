@@ -155,7 +155,7 @@ const Sidebar = () => {
                   padding: "10px 0",
                 }}
               >
-                <strong>© Desarrollado y Diseñado</strong> por Rocio 2024-
+                <strong>© Desarrollado y Diseñado</strong> por Anthony Barcia 2024-
                 <strong>2025</strong>
               </p>
             </div>

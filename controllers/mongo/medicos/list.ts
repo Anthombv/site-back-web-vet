@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { ClientModel } from "../../../database/schemas";
-import { Cliente } from "../../../models";
+import { MedicosModel } from "../../../database/schemas";
+import { Medico } from "../../../models";
 
 
 export default async function handler(
@@ -8,11 +8,11 @@ export default async function handler(
   res: NextApiResponse
 ) {
   // fetch the posts
-  const solicitudes = await ClientModel.find({})
+  const medicos = await MedicosModel.find({})
 
   return res.status(200).json({
-    message: "todas los Clientes",
-    data: solicitudes as Array<Cliente>,
+    message: "todos los medicos",
+    data: medicos as Array<Medico>,
     success: true,
   });
 }

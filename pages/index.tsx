@@ -27,6 +27,14 @@ export default function Home() {
     Router.push("/mascotas");
   };
 
+  const handleEspecialidad = () => {
+    Router.push("/especialidades");
+  };
+
+  const handleMedicos = () => {
+    Router.push("/medicos");
+  };
+
   return (
     <>
       <title>Inicio | Oh My Dog</title>
@@ -99,7 +107,10 @@ export default function Home() {
                 <h2 className="text-center text-xl font-semibold text-blue-600 mb-4">
                   Especialidades
                 </h2>
-                <button className="px-4 py-2 text-white bg-blue-500 rounded-lg hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 w-full">
+                <button
+                  onClick={handleEspecialidad}
+                  className="px-4 py-2 text-white bg-blue-500 rounded-lg hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 w-full"
+                >
                   Ver Especialidades
                 </button>
               </div>
@@ -109,7 +120,10 @@ export default function Home() {
                 <h2 className="text-center text-xl font-semibold text-blue-600 mb-4">
                   Médicos
                 </h2>
-                <button className="px-4 py-2 text-white bg-blue-500 rounded-lg hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 w-full">
+                <button
+                  onClick={handleMedicos}
+                  className="px-4 py-2 text-white bg-blue-500 rounded-lg hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 w-full"
+                >
                   Ver Médicos
                 </button>
               </div>
@@ -119,7 +133,10 @@ export default function Home() {
                 <h2 className="text-center text-xl font-semibold text-blue-600 mb-4">
                   Clientes
                 </h2>
-                <button onClick={handleClientes} className="px-4 py-2 text-white bg-blue-500 rounded-lg hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 w-full">
+                <button
+                  onClick={handleClientes}
+                  className="px-4 py-2 text-white bg-blue-500 rounded-lg hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 w-full"
+                >
                   Ver Clientes
                 </button>
               </div>
@@ -129,7 +146,10 @@ export default function Home() {
                 <h2 className="text-center text-xl font-semibold text-blue-600 mb-4">
                   Mascotas
                 </h2>
-                <button onClick={handleMascotas} className="px-4 py-2 text-white bg-blue-500 rounded-lg hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 w-full">
+                <button
+                  onClick={handleMascotas}
+                  className="px-4 py-2 text-white bg-blue-500 rounded-lg hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 w-full"
+                >
                   Ver Mascotas
                 </button>
               </div>

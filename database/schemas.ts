@@ -2,9 +2,12 @@ import mongoose, { mongo, Schema } from "mongoose";
 import {
   Auditory,
   Backup,
+  Cita,
   Cliente,
+  Especialidad,
   Factura,
   Mascota,
+  Medico,
   Pago,
   Usuario,
 } from "../models";
@@ -87,6 +90,81 @@ ClientSchema.set("toJSON", {
 
 export const ClientModel =
   mongoose.models.Clientes || mongoose.model("Clientes", ClientSchema);
+
+const EspecialidadSchema = new mongoose.Schema<Especialidad>(
+  {
+    nombre: { type: String },
+  },
+  { timestamps: true }
+);
+
+// Duplicate the ID field.
+EspecialidadSchema.virtual("id").get(function () {
+  return this._id.toHexString();
+});
+
+// Ensure virtual fields are serialised.
+EspecialidadSchema.set("toJSON", {
+  virtuals: true,
+});
+
+export const EspecialidadModel =
+  mongoose.models.Especialidades ||
+  mongoose.model("Especialidades", EspecialidadSchema);
+
+const MedicosSchema = new mongoose.Schema<Medico>(
+  {
+    number: { type: Number },
+    especialidad: { type: EspecialidadSchema },
+    nombres: { type: String },
+    correo: { type: String },
+    telefono: { type: String },
+    fechaNacimiento: { type: String },
+  },
+  { timestamps: true }
+);
+
+// Duplicate the ID field.
+MedicosSchema.virtual("id").get(function () {
+  return this._id.toHexString();
+});
+
+// Ensure virtual fields are serialised.
+MedicosSchema.set("toJSON", {
+  virtuals: true,
+});
+
+export const MedicosModel =
+  mongoose.models.Medicos || mongoose.model("Medicos", MedicosSchema);
+
+const CitasSchema = new mongoose.Schema<Cita>(
+  {
+    number: { type: Number },
+    cliente: { type: ClientSchema },
+    mascota: { type: MascotaSchema },
+    fecha: { type: String },
+    hora: { type: String },
+    diagnostico: { type: String },
+    medico: { type: MedicosSchema },
+    especialidad: { type: EspecialidadSchema },
+    tratamiento: { type: String },
+    detalle: { type: String },
+  },
+  { timestamps: true }
+);
+
+// Duplicate the ID field.
+CitasSchema.virtual("id").get(function () {
+  return this._id.toHexString();
+});
+
+// Ensure virtual fields are serialised.
+CitasSchema.set("toJSON", {
+  virtuals: true,
+});
+
+export const CitaModel =
+  mongoose.models.Citas || mongoose.model("Citas", CitasSchema);
 
 const FactureSchema = new mongoose.Schema<Factura>(
   {
@@ -188,6 +266,50 @@ BackupClientSchema.set("toJSON", {
 export const BackupClientsModel =
   mongoose.models.BackupsClients ||
   mongoose.model("BackupsClients", BackupClientSchema);
+
+const BackupMedicoSchema = new mongoose.Schema<Backup>(
+  {
+    medico: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Medicos",
+    },
+  },
+  { timestamps: true }
+);
+
+BackupMedicoSchema.virtual("id").get(function () {
+  return this._id.toHexString();
+});
+
+BackupMedicoSchema.set("toJSON", {
+  virtuals: true,
+});
+
+export const BackupMedicosModel =
+  mongoose.models.BackupsMedicos ||
+  mongoose.model("BackupsMedicos", BackupMedicoSchema);
+
+const BackupCitaSchema = new mongoose.Schema<Backup>(
+  {
+    cita: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Citas",
+    },
+  },
+  { timestamps: true }
+);
+
+BackupCitaSchema.virtual("id").get(function () {
+  return this._id.toHexString();
+});
+
+BackupCitaSchema.set("toJSON", {
+  virtuals: true,
+});
+
+export const BackupCitasModel =
+  mongoose.models.BackupsCitas ||
+  mongoose.model("BackupsCitas", BackupCitaSchema);
 
 const AuditorySchema = new mongoose.Schema<Auditory>(
   {

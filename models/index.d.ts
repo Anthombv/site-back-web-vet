@@ -86,6 +86,7 @@ export type Medico = {
 export type Cita = {
   id?: string;
   number: number;
+  cliente: Cliente;
   mascota: Mascota;
   fecha: string;
   hora: string;
@@ -142,6 +143,7 @@ export type Backup = {
   cita: any | Cita;
   pagos: any | Pago;
   cliente: any | Cliente
+  medico: any | Medico
 };
 
 //Auditoria del sistema

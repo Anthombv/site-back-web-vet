@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { ClientModel } from "../../../database/schemas";
-import { Cliente } from "../../../models";
+import { CitaModel } from "../../../database/schemas";
+import { Cita } from "../../../models";
 
 
 export default async function handler(
@@ -8,11 +8,11 @@ export default async function handler(
   res: NextApiResponse
 ) {
   // fetch the posts
-  const solicitudes = await ClientModel.find({})
+  const citas = await CitaModel.find({})
 
   return res.status(200).json({
-    message: "todas los Clientes",
-    data: solicitudes as Array<Cliente>,
+    message: "todas las citas",
+    data: citas as Array<Cita>,
     success: true,
   });
 }

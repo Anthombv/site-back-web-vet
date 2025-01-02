@@ -103,7 +103,7 @@ const UsersPanel = () => {
   return (
     <div style={{ padding: "40px 0" }}>
       <button
-        className="text-center bg-transparent hover:bg-blue-500 text-blue-500 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+        className="text-center bg-transparent hover:bg-blue-1000 text-blue-500 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
         onClick={showModal}
       >
         Crear Usuario

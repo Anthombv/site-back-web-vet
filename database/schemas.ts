@@ -9,8 +9,56 @@ import {
   Mascota,
   Medico,
   Pago,
+  Producto,
   Usuario,
+  Venta,
 } from "../models";
+
+const EspecialidadSchema = new mongoose.Schema<Especialidad>(
+  {
+    nombre: { type: String },
+  },
+  { timestamps: true }
+);
+
+// Duplicate the ID field.
+EspecialidadSchema.virtual("id").get(function () {
+  return this._id.toHexString();
+});
+
+// Ensure virtual fields are serialised.
+EspecialidadSchema.set("toJSON", {
+  virtuals: true,
+});
+
+export const EspecialidadModel =
+  mongoose.models.Especialidades ||
+  mongoose.model("Especialidades", EspecialidadSchema);
+
+const MedicosSchema = new mongoose.Schema<Medico>(
+  {
+    number: { type: Number },
+    especialidad: { type: EspecialidadSchema },
+    nombres: { type: String },
+    correo: { type: String },
+    telefono: { type: String },
+    fechaNacimiento: { type: String },
+  },
+  { timestamps: true }
+);
+
+// Duplicate the ID field.
+MedicosSchema.virtual("id").get(function () {
+  return this._id.toHexString();
+});
+
+// Ensure virtual fields are serialised.
+MedicosSchema.set("toJSON", {
+  virtuals: true,
+});
+
+export const MedicosModel =
+  mongoose.models.Medicos || mongoose.model("Medicos", MedicosSchema);
 
 const UserSchema = new mongoose.Schema<Usuario>(
   {
@@ -20,6 +68,7 @@ const UserSchema = new mongoose.Schema<Usuario>(
     nombre: { type: String },
     correo: { type: String },
     identificacion: { type: String },
+    medico: { type: MedicosSchema },
     telefono: { type: String },
     rol: { type: Number },
     estado: { type: String },
@@ -91,52 +140,6 @@ ClientSchema.set("toJSON", {
 export const ClientModel =
   mongoose.models.Clientes || mongoose.model("Clientes", ClientSchema);
 
-const EspecialidadSchema = new mongoose.Schema<Especialidad>(
-  {
-    nombre: { type: String },
-  },
-  { timestamps: true }
-);
-
-// Duplicate the ID field.
-EspecialidadSchema.virtual("id").get(function () {
-  return this._id.toHexString();
-});
-
-// Ensure virtual fields are serialised.
-EspecialidadSchema.set("toJSON", {
-  virtuals: true,
-});
-
-export const EspecialidadModel =
-  mongoose.models.Especialidades ||
-  mongoose.model("Especialidades", EspecialidadSchema);
-
-const MedicosSchema = new mongoose.Schema<Medico>(
-  {
-    number: { type: Number },
-    especialidad: { type: EspecialidadSchema },
-    nombres: { type: String },
-    correo: { type: String },
-    telefono: { type: String },
-    fechaNacimiento: { type: String },
-  },
-  { timestamps: true }
-);
-
-// Duplicate the ID field.
-MedicosSchema.virtual("id").get(function () {
-  return this._id.toHexString();
-});
-
-// Ensure virtual fields are serialised.
-MedicosSchema.set("toJSON", {
-  virtuals: true,
-});
-
-export const MedicosModel =
-  mongoose.models.Medicos || mongoose.model("Medicos", MedicosSchema);
-
 const CitasSchema = new mongoose.Schema<Cita>(
   {
     number: { type: Number },
@@ -188,7 +191,7 @@ FactureSchema.set("toJSON", {
   virtuals: true,
 });
 
-const SolicitudeSchema = new mongoose.Schema<Pago>(
+const PagoSchema = new mongoose.Schema<Pago>(
   {
     number: { type: Number },
     fechaCreacion: { type: String },
@@ -200,12 +203,12 @@ const SolicitudeSchema = new mongoose.Schema<Pago>(
 );
 
 // Duplicate the ID field.
-SolicitudeSchema.virtual("id").get(function () {
+PagoSchema.virtual("id").get(function () {
   return this._id.toHexString();
 });
 
 // Calculate total from factures.
-SolicitudeSchema.virtual("total").get(function () {
+PagoSchema.virtual("total").get(function () {
   let total = 0;
   this.facturas.forEach(
     (element: Factura) => (total += element.valorFactura ?? 0)
@@ -214,36 +217,91 @@ SolicitudeSchema.virtual("total").get(function () {
 });
 
 // Ensure virtual fields are serialised.
-SolicitudeSchema.set("toJSON", {
+PagoSchema.set("toJSON", {
   virtuals: true,
 });
 
-export const SolicitudeModel =
-  mongoose.models.Solicitudes ||
-  mongoose.model("Solicitudes", SolicitudeSchema);
+export const PagoModel =
+  mongoose.models.Pagos || mongoose.model("Pagos", PagoSchema);
 
-const BackupSchema = new mongoose.Schema<Backup>(
+const ProductosSchema = new mongoose.Schema<Producto>(
+  {
+    nombre: { type: String },
+    tipo: { type: String },
+    stock: { type: Number },
+    valor: { type: Number },
+  },
+  { timestamps: true }
+);
+
+// Duplicate the ID field.
+ProductosSchema.virtual("id").get(function () {
+  return this._id.toHexString();
+});
+
+// Ensure virtual fields are serialised.
+ProductosSchema.set("toJSON", {
+  virtuals: true,
+});
+
+export const ProductoModel =
+  mongoose.models.Productos || mongoose.model("Productos", ProductosSchema);
+
+const VentaSchema = new mongoose.Schema<Venta>(
+  {
+    number: { type: Number },
+    cliente: { type: ClientSchema },
+    fecha: { type: String },
+    solicitante: { type: String },
+    productos: { type: [ProductosSchema] },
+    valorVenta: { type: Number },
+  },
+  { timestamps: true }
+);
+
+// Duplicate the ID field.
+VentaSchema.virtual("id").get(function () {
+  return this._id.toHexString();
+});
+
+// Calculate total from factures.
+VentaSchema.virtual("total").get(function () {
+  let total = 0;
+  this.productos.forEach((element: Producto) => (total += element.valor ?? 0));
+  return total;
+});
+
+// Ensure virtual fields are serialised.
+VentaSchema.set("toJSON", {
+  virtuals: true,
+});
+
+export const VentaModel =
+  mongoose.models.Ventas || mongoose.model("Ventas", VentaSchema);
+
+const BackupPagosSchema = new mongoose.Schema<Backup>(
   {
     pagos: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "solicitudes",
+      ref: "Pagos",
     },
   },
   { timestamps: true }
 );
 
 // Duplicate the ID field.
-BackupSchema.virtual("id").get(function () {
+BackupPagosSchema.virtual("id").get(function () {
   return this._id.toHexString();
 });
 
 // Ensure virtual fields are serialised.
-BackupSchema.set("toJSON", {
+BackupPagosSchema.set("toJSON", {
   virtuals: true,
 });
 
-export const BackupModel =
-  mongoose.models.Backups || mongoose.model("Backups", BackupSchema);
+export const BackupPagosModel =
+  mongoose.models.BackupsPagos ||
+  mongoose.model("BackupsPagos", BackupPagosSchema);
 
 const BackupClientSchema = new mongoose.Schema<Backup>(
   {
@@ -310,6 +368,28 @@ BackupCitaSchema.set("toJSON", {
 export const BackupCitasModel =
   mongoose.models.BackupsCitas ||
   mongoose.model("BackupsCitas", BackupCitaSchema);
+
+const BackupVentasSchema = new mongoose.Schema<Backup>(
+  {
+    ventas: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Ventas",
+    },
+  },
+  { timestamps: true }
+);
+
+BackupVentasSchema.virtual("id").get(function () {
+  return this._id.toHexString();
+});
+
+BackupVentasSchema.set("toJSON", {
+  virtuals: true,
+});
+
+export const BackupVentasModel =
+  mongoose.models.BackupsVentas ||
+  mongoose.model("BackupsVentas", BackupVentasSchema);
 
 const AuditorySchema = new mongoose.Schema<Auditory>(
   {

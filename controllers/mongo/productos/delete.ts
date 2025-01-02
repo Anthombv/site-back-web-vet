@@ -1,7 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
+import { AuditoryModel, ProductoModel } from "../../../database/schemas";
 import FormatedDate from "../../utils/formated_date";
-import { SolicitudeModel, AuditoryModel } from "../../../database/schemas";
-
 
 export default async function handler(
   req: NextApiRequest,
@@ -9,13 +8,13 @@ export default async function handler(
 ) {
   const id = req.query.id as string;
   const userName = req.headers.username as string;
-  const resp = await SolicitudeModel.deleteOne({ _id: id });
+  const resp = await ProductoModel.findByIdAndRemove(id);
   //{ acknowledged: true, deletedCount: 1 }
 
   const auditory = new AuditoryModel({
     date: FormatedDate(),
     user: userName,
-    action: "Elimino una Solicitud",
+    action: "Elimino un producto: "+ resp.nombre,
   });
   await auditory.save();
 

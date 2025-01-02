@@ -20,7 +20,7 @@ const ConfirmModal = (props: ModalProps<any>) => {
         <div className="justify-end mt-3 grid md:grid-cols-4 grid-cols-1 gap-4">
           <div>
             <button
-              className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded-full text-sm"
+              className="bg-transparent hover:bg-blue-1000 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded-full text-sm"
               onClick={props.onDone}
             >
               Borrar

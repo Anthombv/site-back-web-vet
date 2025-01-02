@@ -26,7 +26,24 @@ export type UserRole =
   | 1 //Secretaria
   | 2 //Gerente
   | 3 //Medico
-  | 4 //Cliente
+  | 4; //Cliente
+
+// Modelo para las especialidades
+export type Especialidad = {
+  id?: string;
+  nombre: string;
+};
+
+// Modelo para los médicos
+export type Medico = {
+  id?: string;
+  number: number;
+  especialidad: Especialidad;
+  nombres: string;
+  correo: string;
+  telefono: string;
+  fechaNacimiento: string;
+};
 
 // Modelo para los usuarios
 export type Usuario = {
@@ -37,6 +54,7 @@ export type Usuario = {
   contraseña: string;
   nombre: string;
   correo: string;
+  medico?: Medico;
   telefono: string;
   rol: UserRole;
   estado: string;
@@ -63,23 +81,6 @@ export type Cliente = {
   telefono: string;
   correo: string;
   mascotas: Array<Mascota>;
-};
-
-// Modelo para las especialidades
-export type Especialidad = {
-  id?: string;
-  nombre: string;
-};
-
-// Modelo para los médicos
-export type Medico = {
-  id?: string;
-  number: number;
-  especialidad: Especialidad;
-  nombres: string;
-  correo: string;
-  telefono: string;
-  fechaNacimiento: string;
 };
 
 // Modelo para las citas
@@ -124,6 +125,13 @@ export type Producto = {
   nombre: string;
   tipo: string; // Ejemplo: alimento, medicamento, etc.
   stock: number;
+  valor: number;
+};
+
+export type ProductoSeleccionado = {
+  producto: Producto;
+  cantidad: number;
+  total: number;
 };
 
 // Modelo para las ventas
@@ -133,7 +141,7 @@ export type Venta = {
   cliente: Cliente;
   fecha: string;
   solicitante: string;
-  productos: Producto[];
+  productos: Array<Producto>;
   valorVenta: number;
 };
 
@@ -142,8 +150,9 @@ export type Backup = {
   id?: string;
   cita: any | Cita;
   pagos: any | Pago;
-  cliente: any | Cliente
-  medico: any | Medico
+  cliente: any | Cliente;
+  medico: any | Medico;
+  ventas: any | Venta;
 };
 
 //Auditoria del sistema

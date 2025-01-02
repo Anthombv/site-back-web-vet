@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 import { useAuth } from "../../controllers/hooks/use_auth";
 import { useEffect, useState } from "react";
 import HttpClient from "../../controllers/utils/http_client";
-import { Cita, Pago } from "../../models";
+import { Especialidad, Medico, Pago } from "../../models";
 import TreeTable, { ColumnData } from "../components/tree_table";
 
 type Props = {
@@ -19,24 +19,24 @@ type Props = {
   inTabs?: boolean;
 };
 
-export const CitasPages = (props: Props) => {
+export const PagosPage = (props: Props) => {
   const { auth } = useAuth();
-  const [tableData, setTableData] = useState<Array<Cita>>([]);
+  const [tableData, setTableData] = useState<Array<Pago>>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
   const loadData = async () => {
     setLoading(true);
 
     var response = await HttpClient(
-      "/api/cita",
+      "/api/pagos",
       "GET",
       auth.usuario,
       auth.rol
     );
 
-    const citas: Array<Cita> = response.data ?? [];
-    console.log(citas);
-    setTableData(citas);
+    const pagos: Array<Pago> = response.data ?? [];
+    console.log();
+    setTableData(pagos);
     setLoading(false);
   };
 
@@ -48,33 +48,26 @@ export const CitasPages = (props: Props) => {
   const columns: ColumnData[] = [
     {
       dataField: "number",
-      caption: "#",
+      caption: "Nombre",
       alignment: "center",
       cssClass: "bold",
     },
     {
-      dataField: "cliente.nombre",
-      caption: "Nombre cliente",
+      dataField: "solicitante",
+      caption: "Solicitante",
+      alignment: "center",
       cssClass: "bold",
     },
     {
-      dataField: "cliente.apellidos",
-      caption: "Apellido cliente",
+      dataField: "fechaCreacion",
+      caption: "Fecha creacion",
+      alignment: "center",
       cssClass: "bold",
     },
     {
-      dataField: "mascota.nombre",
-      caption: "Mascota",
-      cssClass: "bold",
-    },
-    {
-      dataField: "especialidad.nombre",
-      caption: "Especialidad",
-      cssClass: "bold",
-    },
-    {
-      dataField: "medico.nombres",
-      caption: "Medico",
+      dataField: "valorTotal",
+      caption: "Valor Total",
+      alignment: "center",
       cssClass: "bold",
     },
   ];
@@ -91,16 +84,10 @@ export const CitasPages = (props: Props) => {
     //    ? showConfirmModal(rowData.id)
     //    : toast.error("No puedes eliminar una Solicitud");
     //},
-    //download: (rowData: Cajas) =>
-    //  !CheckPermissions(auth, [0])
-    //    ? Router.push({
-    //        pathname: "/solicitude/print/" + (rowData.id as string),
-    //      })
-    //    : toast.error("No puedes acceder"),
   };
   return (
     <>
-      <title>Citas | "Oh my dog"</title>
+      <title>Pagos | "Oh my dog"</title>
       <div className="flex h-screen">
         <div className="md:w-1/6 max-w-none">
           <Sidebar />
@@ -109,7 +96,7 @@ export const CitasPages = (props: Props) => {
           <div className="bg-white w-5/6 h-5/6 mx-auto">
             <div className="mt-6">
               <p className="md:text-4xl text-xl text-center pt-5 font-extrabold text-blue-500">
-                Gestión de citas médicas
+                Pagos realizados
               </p>
             </div>
 
@@ -117,11 +104,11 @@ export const CitasPages = (props: Props) => {
               className="text-white bg-blue-400 hover:bg-blue-1000 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-3 text-center mx-2 mb-2 mt-3 dark:focus:ring-blue-900"
               onClick={() =>
                 CheckPermissions(auth, [0, 1])
-                  ? Router.push({ pathname: "/medical-appointment/create" })
+                  ? Router.push({ pathname: "/pagos/create" })
                   : toast.info("No puede ingresar solicitudes")
               }
             >
-              Crear cita
+              Crear pago
             </Button>
             <div className="p-2">
               <TreeTable
@@ -148,4 +135,4 @@ export const CitasPages = (props: Props) => {
   );
 };
 
-export default CitasPages;
+export default PagosPage;

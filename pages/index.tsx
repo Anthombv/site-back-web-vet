@@ -12,7 +12,7 @@ export default function Home() {
   const [modalVisibleGR, setModalVisibleGR] = useState<boolean>(false);
 
   const handlePagos = () => {
-    Router.push("/solicitude");
+    Router.push("/pagos");
   };
 
   const handleCitas = () => {
@@ -35,11 +35,19 @@ export default function Home() {
     Router.push("/medicos");
   };
 
+  const handleProductos = () => {
+    Router.push("/productos");
+  };
+
+  const handleVentas = () => {
+    Router.push("/ventas");
+  };
+
   return (
     <>
       <title>Inicio | Oh My Dog</title>
-      <div className="flex h-screen">
-        <div className="flex-1 bg-blue-50 p-6">
+      <div className="flex h-full bg-blue-100">
+        <div className="flex-1 p-6">
           <div className="bg-white w-full rounded-xl shadow-2xl p-8 mb-8">
             <div className="flex items-center mb-8">
               <p className="text-3xl text-center text-blue-800 font-bold w-full">
@@ -65,39 +73,6 @@ export default function Home() {
                   </button>
                   <button className="px-4 py-2 text-white bg-blue-500 rounded-lg hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300">
                     Historial de Citas
-                  </button>
-                </div>
-              </div>
-
-              {/* Pagos */}
-              <div className="max-w-sm p-6 bg-white border border-gray-200 rounded-xl shadow-lg">
-                <h2 className="text-center text-xl font-semibold text-blue-600 mb-4">
-                  Pagos
-                </h2>
-                <div className="flex flex-col gap-3">
-                  <button
-                    onClick={handlePagos}
-                    className="px-4 py-2 text-white bg-blue-500 rounded-lg hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300"
-                  >
-                    Ver Pagos Realizados
-                  </button>
-                  <button className="px-4 py-2 text-white bg-blue-500 rounded-lg hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300">
-                    Ver Reportes de Pagos
-                  </button>
-                </div>
-              </div>
-
-              {/* Ventas */}
-              <div className="max-w-sm p-6 bg-white border border-gray-200 rounded-xl shadow-lg">
-                <h2 className="text-center text-xl font-semibold text-blue-600 mb-4">
-                  Ventas
-                </h2>
-                <div className="flex flex-col gap-3">
-                  <button className="px-4 py-2 text-white bg-blue-500 rounded-lg hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300">
-                    Ver Ventas Realizadas
-                  </button>
-                  <button className="px-4 py-2 text-white bg-blue-500 rounded-lg hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300">
-                    Reportes de Ventas
                   </button>
                 </div>
               </div>
@@ -152,6 +127,57 @@ export default function Home() {
                 >
                   Ver Mascotas
                 </button>
+              </div>
+
+              {/* Pagos */}
+              <div className="max-w-sm p-6 bg-white border border-gray-200 rounded-xl shadow-lg">
+                <h2 className="text-center text-xl font-semibold text-blue-600 mb-4">
+                  Pagos
+                </h2>
+                <div className="flex flex-col gap-3">
+                  <button
+                    onClick={handlePagos}
+                    className="px-4 py-2 text-white bg-blue-500 rounded-lg hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300"
+                  >
+                    Ver Pagos Realizados
+                  </button>
+                  <button className="px-4 py-2 text-white bg-blue-500 rounded-lg hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300">
+                    Ver Reportes de Pagos
+                  </button>
+                </div>
+              </div>
+
+              {/* Productos */}
+              <div className="max-w-sm p-6 bg-white border border-gray-200 rounded-xl shadow-lg">
+                <h2 className="text-center text-xl font-semibold text-blue-600 mb-4">
+                  Productos
+                </h2>
+                <div className="flex flex-col gap-3">
+                  <button
+                    onClick={handleProductos}
+                    className="px-4 py-2 text-white bg-blue-500 rounded-lg hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300"
+                  >
+                    Ver productos
+                  </button>
+                </div>
+              </div>
+
+              {/* Ventas */}
+              <div className="max-w-sm p-6 bg-white border border-gray-200 rounded-xl shadow-lg">
+                <h2 className="text-center text-xl font-semibold text-blue-600 mb-4">
+                  Ventas
+                </h2>
+                <div className="flex flex-col gap-3">
+                  <button
+                    onClick={handleVentas}
+                    className="px-4 py-2 text-white bg-blue-500 rounded-lg hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300"
+                  >
+                    Ver Ventas Realizadas
+                  </button>
+                  <button className="px-4 py-2 text-white bg-blue-500 rounded-lg hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300">
+                    Reportes de Ventas
+                  </button>
+                </div>
               </div>
             </div>
           </div>

@@ -1,43 +1,46 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { Pago } from "../../../models";
-import { AuditoryModel, SolicitudeModel } from "../../../database/schemas";
+import { Cita, Medico, Pago } from "../../../models";
 import FormatedDate from "../../utils/formated_date";
-
+import {
+  AuditoryModel,
+  CitaModel,
+  MedicosModel,
+  PagoModel,
+} from "../../../database/schemas";
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const solicitude = req.body as Pago;
+  const pago = req.body as Pago;
   const userName = req.headers.username as string;
-  const role = req.headers.role as string;
 
-  const newSolicitude = (): Pago => {
-    return solicitude;
+  const newPago = (): Pago => {
+    return pago;
   };
 
-  const resp = await SolicitudeModel.findOneAndUpdate(
+  const resp = await PagoModel.findOneAndUpdate(
     {
-      _id: solicitude.id,
+      _id: pago.id,
     },
-    newSolicitude()
+    newPago()
   );
 
   const auditory = new AuditoryModel({
     date: FormatedDate(),
     user: userName,
-    action: "Edito la Solicitud de IC" + solicitude.number,
+    action: "Actualizo al pago:" + pago.number,
   });
   await auditory.save();
 
   if (resp === null)
     return res.status(500).json({
-      message: "Solicitud no encontrada",
+      message: "Pago no encontrado",
       success: false,
     });
 
   return res.status(200).json({
-    message: "Solicitud editada",
+    message: "Pago editado",
     success: true,
   });
 }

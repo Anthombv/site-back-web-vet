@@ -1,7 +1,8 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import read from "../../../controllers/mongo/solicitude/read";
-import remove from "../../../controllers/mongo/solicitude/delete";
+import update from "../../../controllers/mongo/ventas/update";
+import list from "../../../controllers/mongo/ventas/list";
 import dbConnect from "../../../database/connect/mongo";
+import create from "../../../controllers/mongo/ventas/create";
 
 export default async function handler(
   req: NextApiRequest,
@@ -13,9 +14,11 @@ export default async function handler(
 
     switch (req.method) {
       case "GET":
-        return await read(req, res);
-      case "DELETE":
-        return await remove(req, res);
+        return await list(req, res);
+      case "POST":
+        return await create(req, res);
+      case "PUT":
+        return await update(req, res);
       default:
         throw new Error("Invalid method");
     }

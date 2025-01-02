@@ -1,29 +1,26 @@
 /* eslint-disable react/no-unescaped-entities */
-import { Button } from "react-bootstrap";
+import { Button, Table } from "react-bootstrap";
 import Sidebar from "../../components/sidebar";
 import { useAuth } from "../../../controllers/hooks/use_auth";
 import { useFormik } from "formik";
 import Router from "next/router";
 import { toast } from "react-toastify";
-import { Medico, ResponseData } from "../../../models";
+import { Producto, ResponseData } from "../../../models";
 import HttpClient from "../../../controllers/utils/http_client";
-import { useEffect, useState } from "react";
+import FormatedDate from "../../../controllers/utils/formated_date";
+import { useState } from "react";
 
-export const MedicosCreate = () => {
+export const ProductosCreate = () => {
   const { auth } = useAuth();
   const [loading, setLoading] = useState<boolean>(false);
-  const [initialValues, _setInitialValues] = useState<Medico>({
-    number: 0,
-    nombres: "",
-    especialidad: {
-      nombre: "",
-    },
-    correo: "",
-    telefono: "",
-    fechaNacimiento: "",
+  const [initialValues, _setInitialValues] = useState<Producto>({
+    nombre: "",
+    tipo: "",
+    stock: 0,
+    valor: 0,
   });
 
-  const formik = useFormik<Medico>({
+  const formik = useFormik<Producto>({
     enableReinitialize: true,
     validateOnMount: true,
     validateOnBlur: true,
@@ -32,9 +29,27 @@ export const MedicosCreate = () => {
     onSubmit: async (formData) => {
       setLoading(true);
 
-      // Hacer la solicitud PUT al backend
+      console.log(formData);
+
+      if (formData.nombre === "") {
+        toast.warning("Ingrese el nombre del producto");
+        return;
+      }
+
+      if (formData.tipo === "") {
+        toast.warning("Ingrese el tipo del producto");
+        return;
+      }
+      if (formData.stock === 0) {
+        toast.warning("Ingrese el stock del producto");
+        return;
+      }
+      if (formData.valor === 0) {
+        toast.warning("Ingrese el valor del producto");
+        return;
+      }
       const response: ResponseData = await HttpClient(
-        `/api/medicos`,
+        `/api/productos`,
         "POST",
         auth.usuario,
         auth.rol,
@@ -42,7 +57,7 @@ export const MedicosCreate = () => {
       );
 
       if (response.success) {
-        toast.success("Medico creado correctamente!");
+        toast.success("Producto creado correctamente!");
         Router.back();
       } else {
         toast.warning(response.message);
@@ -54,69 +69,61 @@ export const MedicosCreate = () => {
 
   return (
     <>
-      <title>Crear medico | "Oh my dog"</title>
+      <title>Crear producto | "Oh my dog"</title>
       <div className="flex h-screen">
         <div className="md:w-1/6 max-w-none">
           <Sidebar />
         </div>
         <div className="w-12/12 md:w-5/6 bg-blue-100">
-          <div className="bg-white w-5/6 h-5/6 mx-auto">
+          <div className="bg-white w-5/6 h-auto mx-auto">
             <div className="mt-10">
               <p className="md:text-3xl text-xl text-center pt-5 font-extrabold text-blue-500">
-                Crear medico
+                Crear producto
               </p>
 
               <div className="grid grid-cols-3 gap-4 px-4 py-2">
                 <div>
-                  <label>Nombres del medico</label>
+                  <label>Nombre del producto</label>
                   <input
                     type="text"
-                    placeholder="nombre"
-                    name="nombres"
-                    value={formik.values.nombres}
+                    placeholder="Nombre del producto"
+                    name="nombre"
+                    value={formik.values.nombre}
                     onChange={formik.handleChange}
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
                   />
                 </div>
                 <div>
-                  <label>Especialidad</label>
+                  <label>Tipo del producto</label>
                   <input
                     type="text"
-                    placeholder="nombre"
-                    name="especialidad.nombre"
-                    value={formik.values.especialidad.nombre}
+                    placeholder="Tipo del producto"
+                    name="tipo"
+                    value={formik.values.tipo}
                     onChange={formik.handleChange}
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
                   />
                 </div>
+
                 <div>
-                  <label>Correo</label>
+                  <label>Stock del producto</label>
                   <input
-                    type="text"
-                    placeholder="correo"
-                    name="correo"
-                    value={formik.values.correo}
+                    type="number"
+                    placeholder="Stock del producto"
+                    name="stock"
+                    value={formik.values.stock}
                     onChange={formik.handleChange}
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
                   />
                 </div>
+
                 <div>
-                  <label>Telefono</label>
+                  <label>Valor del producto</label>
                   <input
-                    type="text"
-                    placeholder="Telefono"
-                    name="telefono"
-                    value={formik.values.telefono}
-                    onChange={formik.handleChange}
-                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
-                  />
-                </div>
-                <div>
-                  <label>Fecha de nacimiento</label>
-                  <input
-                    type="date"
-                    name="fechaNacimiento"
-                    value={formik.values.fechaNacimiento}
+                    type="number"
+                    placeholder="Valor del producto"
+                    name="valor"
+                    value={formik.values.valor}
                     onChange={formik.handleChange}
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
                   />
@@ -125,10 +132,10 @@ export const MedicosCreate = () => {
 
               <div className="grid grid-cols-4 gap-4">
                 <Button
-                  className="text-white bg-blue-400 hover:bg-blue-1000 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-3 text-center mx-2 mb-2 mt-3 dark:focus:ring-blue-900"
+                  className="text-white bg-blue-400 hover:bg-blue-1000 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-3 py-3 text-center mx-5 mb-5 mt-5 dark:focus:ring-blue-900"
                   onClick={() => formik.handleSubmit()}
                 >
-                  Guardar medico
+                  Guardar producto
                 </Button>
               </div>
             </div>
@@ -139,4 +146,4 @@ export const MedicosCreate = () => {
   );
 };
 
-export default MedicosCreate;
+export default ProductosCreate;

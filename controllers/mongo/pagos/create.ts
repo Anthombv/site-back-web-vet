@@ -1,7 +1,11 @@
 import { NextApiRequest, NextApiResponse } from "next";
+import {
+  AuditoryModel,
+  BackupPagosModel,
+  PagoModel,
+} from "../../../database/schemas";
+import {Pago } from "../../../models";
 import FormatedDate from "../../utils/formated_date";
-import { BackupModel, SolicitudeModel, AuditoryModel } from "../../../database/schemas";
-import { Pago } from "../../../models";
 
 export default async function handler(
   req: NextApiRequest,
@@ -9,26 +13,25 @@ export default async function handler(
 ) {
   const pago = req.body as Pago;
   const userName = req.headers.username as string;
-  const count: number = await BackupModel.countDocuments();
-
+  const count: number = await BackupPagosModel.countDocuments();
   // fetch the posts
-  const soli = new SolicitudeModel({ ...pago, number: count + 1 });
+  const pagopost = new PagoModel({ ...pago, number: count + 1 });
 
-  await soli.save();
+  await pagopost.save();
 
   const auditory = new AuditoryModel({
     date: FormatedDate(),
     user: userName,
-    action: "Creó pago N°" + pago.number,
+    action: "Creo un pago: " + pagopost.nombres,
   });
   await auditory.save();
 
-  const backup = new BackupModel({ pago: soli._id });
+  const backup = new BackupPagosModel({ pago: pagopost._id });
 
   await backup.save();
 
   return res.status(200).json({
-    message: "Pago creado",
+    message: "Pago Creado",
     success: true,
   });
 }

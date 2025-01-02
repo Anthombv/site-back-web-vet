@@ -20,7 +20,7 @@ const Configuration = () => {
         <div className="md:w-1/6 max-w-none">
           <Sidebar />
         </div>
-        <div className="w-12/12 md:w-5/6 h-screen flex items-center justify-center bg-blue-50">
+        <div className="w-12/12 md:w-5/6 h-screen flex items-center justify-center bg-blue-100">
           <div className="w-11/12 bg-white my-14">
             <div className="grid grid-cols-1 md:grid-cols-1 gap-4 m-2">
               <TabContainer

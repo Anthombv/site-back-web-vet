@@ -63,7 +63,7 @@ export const ClientCreate = () => {
         <div className="md:w-1/6 max-w-none">
           <Sidebar />
         </div>
-        <div className="w-12/12 md:w-5/6 bg-blue-50">
+        <div className="w-12/12 md:w-5/6 bg-blue-100">
           <div className="bg-white w-5/6 h-5/6 mx-auto">
             <div className="mt-10">
               <p className="md:text-3xl text-xl text-center pt-5 font-extrabold text-blue-500">
@@ -139,7 +139,7 @@ export const ClientCreate = () => {
               </div>
               <div className="grid grid-cols-4 gap-4">
                 <Button
-                  className="text-white bg-blue-400 hover:bg-blue-500 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-3 text-center mx-2 mb-2 mt-3 dark:focus:ring-blue-900"
+                  className="text-white bg-blue-400 hover:bg-blue-1000 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-3 text-center mx-2 mb-2 mt-3 dark:focus:ring-blue-900"
                   onClick={() => formik.handleSubmit()}
                 >
                   Guardar cliente

@@ -7,7 +7,7 @@ import theme from "../../../controllers/styles/theme";
     cursor: pointer;
   }
   .active{
-    color: red !important;
+    color: blue !important;
   }
 `
 

@@ -1,9 +1,10 @@
 import { useFormik } from "formik";
 import React, { useEffect, useState } from "react";
-import { Usuario, ModalProps } from "../../../models";
+import { Usuario, ModalProps, Medico } from "../../../models";
 import { toast } from "react-toastify";
 import { useAuth } from "../../../controllers/hooks/use_auth";
 import theme from "../../../controllers/styles/theme";
+import HttpClient from "../../../controllers/utils/http_client";
 
 const initialUser: Usuario = {
   id: null,
@@ -12,6 +13,7 @@ const initialUser: Usuario = {
   contraseña: "",
   correo: "",
   telefono: "",
+  medico: null,
   rol: 1,
   nombre: "",
   identificacion: "",
@@ -25,12 +27,34 @@ interface Props extends ModalProps<Usuario> {
 const UserModal = (props: Props) => {
   const { auth } = useAuth();
   const [loading, setLoading] = useState<boolean>(false);
+  const [medicos, setMedicos] = useState<Medico[]>([]);
   const [initialValues, setInitialValues] = useState<Usuario>(initialUser);
 
   const handleClose = () => {
     formik.resetForm({ values: initialUser });
     props.close();
   };
+
+  const loadMedicos = async () => {
+    setLoading(true);
+
+    var response = await HttpClient(
+      "/api/medicos",
+      "GET",
+      auth.usuario,
+      auth.rol
+    );
+
+    const medicos: Array<Medico> = response.data ?? [];
+    console.log(medicos);
+    setMedicos(medicos);
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    loadMedicos();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // maneja los datos y comportamiento del formulario
   const formik = useFormik({
@@ -65,6 +89,11 @@ const UserModal = (props: Props) => {
         return;
       }
 
+      if (formData.rol === 3 && formData.medico === null) {
+        toast.warning("Debe asignar un médico si el rol es Médico");
+        return;
+      }
+
       setLoading(true);
       console.log(formData);
       await props.onDone(formData);
@@ -88,16 +117,16 @@ const UserModal = (props: Props) => {
         <div className="bg-white p-6 rounded shadow-lg z-10 w-2/3 h-5/6 overflow-y-auto">
           <form onSubmit={formik.handleSubmit}>
             <div
-              style={{ color: theme.colors.red }}
+              style={{ color: theme.colors.blue }}
               className="text-center text-xl mb-2 font-semibold"
             >
-              Editar Usuario
+              Usuario
             </div>
             <hr />
             <div className="grid md:grid-cols-2 grid-cols-1 gap-4 mb-3">
               <div>
                 <label className="text-gray-700 text-sm font-bold mb-2">
-                  Nombre del Trabajador
+                  Nombre del usuario
                 </label>
 
                 <input
@@ -175,7 +204,13 @@ const UserModal = (props: Props) => {
                   className="border border-gray-300 text-gray-900 text-sm rounded focus:ring-blue-500 focus:border-blue-500 block w-full py-2 px-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   aria-label="Default select rol"
                   name="rol"
-                  onChange={formik.handleChange}
+                  onChange={(e) => {
+                    const value = parseInt(e.target.value, 10);
+                    formik.setFieldValue("rol", value); // Actualiza el valor del rol
+                    if (value !== 3) {
+                      formik.setFieldValue("medico", null); // Limpia el médico si no es rol médico
+                    }
+                  }}
                   value={formik.values.rol}
                   defaultValue={1}
                 >
@@ -205,10 +240,38 @@ const UserModal = (props: Props) => {
                   <option value="Inactivo">Inactivo</option>
                 </select>
               </div>
+
+              {formik.values.rol === 3 && (
+                <div>
+                  <label className="text-gray-700 text-sm font-bold mb-2">
+                    Asignar Médico
+                  </label>
+                  <select
+                    className="border border-gray-300 text-gray-900 text-sm rounded focus:ring-blue-500 focus:border-blue-500 block w-full py-2 px-4"
+                    name="medico"
+                    onChange={(e) => {
+                      const selectedMedico = medicos.find(
+                        (medico) => medico.id === e.target.value
+                      );
+                      formik.setFieldValue("medico", selectedMedico || null);
+                    }}
+                    value={(formik.values.medico as Medico)?.id || ""}
+                  >
+                    <option value="" disabled>
+                      Seleccione un médico
+                    </option>
+                    {medicos.map((medico) => (
+                      <option key={medico.id} value={medico.id}>
+                        {medico.nombres} - {medico.especialidad.nombre}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              )}
             </div>
             <hr />
             <button
-              className="bg-transparent hover:bg-blue-1000 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded mb-4"
+              className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded mb-4"
               type="submit"
             >
               Guardar

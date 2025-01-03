@@ -30,6 +30,7 @@ export type TableButtons = {
   cssClass?: string;
   show?: (rowData: any) => void;
   edit?: (rowData: any) => void;
+  edit2?: (rowData: any) => void;
   delete?: (rowData: any) => void;
   download?: (rowData: any) => void;
 };
@@ -128,6 +129,15 @@ const allButtons = (
           icon="/edit.svg"
           onClick={({ row }: any) => buttons.edit!(row.data)}
           cssClass="actionButtonEdit"
+        />
+      )}
+      {buttons.edit2 && (
+        <Button
+          text="Medico"
+          hint="Medico"
+          icon="/tratamiento.png"
+          onClick={({ row }: any) => buttons.edit2!(row.data)}
+          cssClass="actionButtonEdit2"
         />
       )}
       {buttons.delete && (

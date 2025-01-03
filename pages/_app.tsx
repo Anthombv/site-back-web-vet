@@ -25,7 +25,7 @@ export default function App({ Component, pageProps }) {
   useEffect(() => {
     (() => {
       storedValue &&
-        setAuth({ ...storedValue, role: parseInt(storedValue.role) });
+        setAuth({ ...storedValue, rol: parseInt(storedValue.rol) });
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

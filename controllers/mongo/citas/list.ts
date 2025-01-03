@@ -8,7 +8,9 @@ export default async function handler(
   res: NextApiResponse
 ) {
   // fetch the posts
-  const citas = await CitaModel.find({})
+  const citas = await CitaModel.find({
+    $or: [{ diagnostico: "" }, { tratamiento: "" }],
+  });
 
   return res.status(200).json({
     message: "todas las citas",

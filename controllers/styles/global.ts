@@ -12,6 +12,10 @@ const GlobalStyle = createGlobalStyle`
     height: 20px;
     background-color: #007bff;
   }
+  .actionButtonEdit2{
+    cursor: pointer;
+    height: 20px;
+  }
   .actionButtonDelete{
     cursor: pointer;
     height: 20px;

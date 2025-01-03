@@ -21,8 +21,8 @@ const LoadingContainer = (props: Props): JSX.Element => {
       <Image
         src="/loadingCard.gif"
         alt="loading-gif"
-        width="580"
-        height="435"
+        width="300"
+        height="300"
         priority={false}
       />
     </GifContainer>

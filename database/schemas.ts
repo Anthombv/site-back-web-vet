@@ -68,7 +68,7 @@ const UserSchema = new mongoose.Schema<Usuario>(
     nombre: { type: String },
     correo: { type: String },
     identificacion: { type: String },
-    medico: { type: MedicosSchema },
+    medico: { type: MedicosSchema, unique: true },
     telefono: { type: String },
     rol: { type: Number },
     estado: { type: String },

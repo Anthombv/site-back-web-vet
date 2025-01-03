@@ -16,12 +16,14 @@ export default async function handler(
     user.contraseña !== ""
       ? user
       : {
-          userName: user.usuario,
-          role: user.correo,
-          name: user.nombre,
-          identificationCard: user.telefono,
-          dateBirth: user.estado,
-          age: user.rol,
+          identificacion: user.identificacion,
+          usuario: user.usuario,
+          nombre: user.nombre,
+          correo: user.correo,
+          medico: user.medico,
+          telefono: user.telefono,
+          rol: user.rol,
+          estado: user.estado,
         }
   );
 

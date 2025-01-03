@@ -2,45 +2,68 @@
 /* eslint-disable @next/next/no-img-element */
 
 import Router from "next/router";
-import Sidebar from "./components/sidebar";
 import { useAuth } from "../controllers/hooks/use_auth";
 import { useState } from "react";
 import GeneralReportModal from "./components/modals/generalReport";
+import { CheckPermissions } from "../controllers/utils/check_permissions";
+import { toast } from "react-toastify";
 
 export default function Home() {
   const { auth } = useAuth();
   const [modalVisibleGR, setModalVisibleGR] = useState<boolean>(false);
 
   const handlePagos = () => {
-    Router.push("/pagos");
+    CheckPermissions(auth, [0, 1])
+      ? Router.push("/pagos")
+      : toast.error("No tienes permiso para entrar aqui");
   };
 
   const handleCitas = () => {
-    Router.push("/medical-appointment");
+    CheckPermissions(auth, [0, 1, 3])
+      ? Router.push("/medical-appointment")
+      : toast.error("No tienes permiso para entrar aqui");
   };
 
   const handleClientes = () => {
-    Router.push("/clients");
+    CheckPermissions(auth, [0, 1])
+      ? Router.push("/clients")
+      : toast.error("No tienes permiso para entrar aqui");
   };
 
   const handleMascotas = () => {
-    Router.push("/mascotas");
+    CheckPermissions(auth, [0, 1])
+      ? Router.push("/mascotas")
+      : toast.error("No tienes permiso para entrar aqui");
   };
 
   const handleEspecialidad = () => {
-    Router.push("/especialidades");
+    CheckPermissions(auth, [0, 1])
+      ? Router.push("/especialidades")
+      : toast.error("No tienes permiso para entrar aqui");
   };
 
   const handleMedicos = () => {
-    Router.push("/medicos");
+    CheckPermissions(auth, [0, 1])
+      ? Router.push("/medicos")
+      : toast.error("No tienes permiso para entrar aqui");
   };
 
   const handleProductos = () => {
-    Router.push("/productos");
+    CheckPermissions(auth, [0, 1])
+      ? Router.push("/productos")
+      : toast.error("No tienes permiso para entrar aqui");
   };
 
   const handleVentas = () => {
-    Router.push("/ventas");
+    CheckPermissions(auth, [0, 1])
+      ? Router.push("/ventas")
+      : toast.error("No tienes permiso para entrar aqui");
+  };
+
+  const handleConfiguracion = () => {
+    CheckPermissions(auth, [0])
+      ? Router.push("/configuration")
+      : toast.error("No tienes permiso para entrar aqui");
   };
 
   return (
@@ -176,6 +199,21 @@ export default function Home() {
                   </button>
                   <button className="px-4 py-2 text-white bg-blue-500 rounded-lg hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300">
                     Reportes de Ventas
+                  </button>
+                </div>
+              </div>
+
+              {/* Configuracion */}
+              <div className="max-w-sm p-6 bg-white border border-gray-200 rounded-xl shadow-lg">
+                <h2 className="text-center text-xl font-semibold text-blue-600 mb-4">
+                  Configuracion
+                </h2>
+                <div className="flex flex-col gap-3">
+                  <button
+                    onClick={handleConfiguracion}
+                    className="px-4 py-2 text-white bg-blue-500 rounded-lg hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300"
+                  >
+                    Ir a Configuracion
                   </button>
                 </div>
               </div>

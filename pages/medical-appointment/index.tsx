@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 import { useAuth } from "../../controllers/hooks/use_auth";
 import { useEffect, useState } from "react";
 import HttpClient from "../../controllers/utils/http_client";
-import { Cita, Pago } from "../../models";
+import { Cita } from "../../models";
 import TreeTable, { ColumnData } from "../components/tree_table";
 
 type Props = {
@@ -27,16 +27,28 @@ export const CitasPages = (props: Props) => {
   const loadData = async () => {
     setLoading(true);
 
-    var response = await HttpClient(
+    // Obtener todas las citas desde el backend
+    const response = await HttpClient(
       "/api/cita",
       "GET",
       auth.usuario,
       auth.rol
     );
-
     const citas: Array<Cita> = response.data ?? [];
-    console.log(citas);
-    setTableData(citas);
+
+    // Filtrar citas según el rol del usuario
+    let filteredCitas = citas;
+
+    if (auth.rol === 3 && auth.medico) {
+      // Si el usuario es un médico, filtrar las citas por la especialidad de ese médico
+      filteredCitas = citas.filter(
+        (cita) => cita.especialidad.nombre === auth.medico.especialidad.nombre
+      );
+    }
+
+    console.log(citas)
+
+    setTableData(filteredCitas);
     setLoading(false);
   };
 
@@ -49,6 +61,12 @@ export const CitasPages = (props: Props) => {
     {
       dataField: "number",
       caption: "#",
+      alignment: "center",
+      cssClass: "bold",
+    },
+    {
+      dataField: "fecha",
+      caption: "Fecha",
       alignment: "center",
       cssClass: "bold",
     },
@@ -80,12 +98,18 @@ export const CitasPages = (props: Props) => {
   ];
 
   const buttons = {
-    //edit: (rowData: Cajas) =>
-    //  !CheckPermissions(auth, [0])
-    //    ? Router.push({
-    //        pathname: "/solicitude/edit/" + (rowData.id as string),
-    //      })
-    //    : toast.error("No puedes acceder"),
+    edit: (rowData: Cita) =>
+      CheckPermissions(auth, [0, 3])
+        ? Router.push({
+            pathname: "/medical-appointment/edit/" + (rowData.id as string),
+          })
+        : toast.error("No puedes acceder"),
+    edit2: (rowData: Cita) =>
+      CheckPermissions(auth, [0, 3])
+        ? Router.push({
+            pathname: "/medical-appointment/medical/" + (rowData.id as string),
+          })
+        : toast.error("No puedes acceder"),
     //delete: async (rowData: Cajas) => {
     //  CheckPermissions(auth, [0])
     //    ? showConfirmModal(rowData.id)
@@ -116,7 +140,7 @@ export const CitasPages = (props: Props) => {
             <Button
               className="text-white bg-blue-400 hover:bg-blue-1000 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-3 text-center mx-2 mb-2 mt-3 dark:focus:ring-blue-900"
               onClick={() =>
-                CheckPermissions(auth, [0, 1])
+                CheckPermissions(auth, [0, 1, 3])
                   ? Router.push({ pathname: "/medical-appointment/create" })
                   : toast.info("No puede ingresar solicitudes")
               }

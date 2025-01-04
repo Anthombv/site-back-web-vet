@@ -81,17 +81,11 @@ export const VentasCreate = () => {
       setLoading(true);
 
       formData.cliente = selectedCliente;
-      formData.productos = selectedProductos.map((p) => ({
-        ...p.producto,
-        cantidad: p.cantidad,
-        total: p.total,
-      }));
-
+      formData.productos = selectedProductos; // Incluir todos los datos del producto
       formData.valorVenta = selectedProductos.reduce(
         (acc, p) => acc + p.total,
         0
       );
-
       console.log(formData);
 
       const response: ResponseData = await HttpClient(
@@ -101,7 +95,7 @@ export const VentasCreate = () => {
         auth.rol,
         formData
       );
-
+      
       if (response.success) {
         toast.success("Venta creada correctamente!");
         Router.back();
@@ -274,7 +268,7 @@ export const VentasCreate = () => {
             {/* Botón de guardar */}
             <div className="text-center mt-5">
               <Button
-                className="text-white bg-blue-400 hover:bg-blue-1000 font-medium rounded-lg px-5 py-3"
+                className="text-white bg-blue-400 hover:bg-blue-500 font-medium rounded-lg px-5 py-3"
                 onClick={() => formik.handleSubmit()}
                 disabled={!selectedCliente} // Deshabilitar si no se ha seleccionado cliente
               >

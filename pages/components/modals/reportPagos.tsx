@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 import { ModalProps } from "../../../models";
 import theme from "../../../controllers/styles/theme";
 
-const GeneralReportModal = (props: ModalProps<any>) => {
+const ReportPagos = (props: ModalProps<any>) => {
   const [dates, setDates] = useState<Array<string>>([]);
   return (
     <>
@@ -16,7 +16,7 @@ const GeneralReportModal = (props: ModalProps<any>) => {
         <div className="fixed inset-0 bg-black opacity-50"></div>
         <div className="bg-white p-6 rounded shadow-lg z-10 md:w-1/5 w-4/5 md:h-88 overflow-y-auto">
           <div
-            style={{ color: theme.colors.red }}
+            style={{ color: theme.colors.blue }}
             className="text-center text-xl mb-2 font-semibold"
           >
             Reporte General
@@ -46,7 +46,7 @@ const GeneralReportModal = (props: ModalProps<any>) => {
           />
           <div>
             <button
-              className="bg-red-800 hover:bg-red-600 text-white font-bold py-2 px-4 rounded whitespace-nowrap mt-5"
+              className="text-white bg-blue-400 hover:bg-blue-500 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-3 text-center mx-2 mb-2 mt-3 dark:focus:ring-blue-900"
               onClick={() => {
                 if (
                   dates[0] === undefined ||
@@ -58,7 +58,7 @@ const GeneralReportModal = (props: ModalProps<any>) => {
                 } else {
                   Router.push({
                     pathname:
-                      "/generalReportHistory/" + dates[0] + "¡" + dates[1],
+                      "/pagos/generalReport/" + dates[0] + "¡" + dates[1],
                   });
                 }
               }}
@@ -68,7 +68,7 @@ const GeneralReportModal = (props: ModalProps<any>) => {
           </div>
           <div>
             <button
-              className="bg-gray-800 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded whitespace-nowrap mt-5"
+              className="text-white bg-gray-400 hover:bg-gray-500 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm px-5 py-3 text-center mx-2 mb-2 mt-3 dark:focus:ring-gray-900"
               onClick={props.close}
             >
               Cancelar
@@ -79,4 +79,4 @@ const GeneralReportModal = (props: ModalProps<any>) => {
     </>
   );
 };
-export default GeneralReportModal;
+export default ReportPagos;

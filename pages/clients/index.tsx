@@ -116,7 +116,7 @@ export const ClientPage = (props: Props) => {
             </div>
 
             <Button
-              className="text-white bg-blue-400 hover:bg-blue-1000 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-3 text-center mx-2 mb-2 mt-3 dark:focus:ring-blue-900"
+              className="text-white bg-blue-400 hover:bg-blue-500 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-3 text-center mx-2 mb-2 mt-3 dark:focus:ring-blue-900"
               onClick={() =>
                 CheckPermissions(auth, [0, 1])
                   ? Router.push({ pathname: "/clients/create" })

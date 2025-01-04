@@ -4,13 +4,19 @@
 import Router from "next/router";
 import { useAuth } from "../controllers/hooks/use_auth";
 import { useState } from "react";
-import GeneralReportModal from "./components/modals/generalReport";
+import GeneralReportModal from "./components/modals/reportPagos";
 import { CheckPermissions } from "../controllers/utils/check_permissions";
 import { toast } from "react-toastify";
+import ReportPagos from "./components/modals/reportPagos";
+import ReportVentas from "./components/modals/reportVentas";
 
 export default function Home() {
   const { auth } = useAuth();
-  const [modalVisibleGR, setModalVisibleGR] = useState<boolean>(false);
+  const [modalVisiblePagos, setModalVisiblePagos] = useState<boolean>(false);
+  const [modalVisibleVentas, setModalVisibleVentas] = useState<boolean>(false);
+
+  const showModalPagos = () => setModalVisiblePagos(true);
+  const showModalVentas = () => setModalVisibleVentas(true);
 
   const handlePagos = () => {
     CheckPermissions(auth, [0, 1])
@@ -164,7 +170,10 @@ export default function Home() {
                   >
                     Ver Pagos Realizados
                   </button>
-                  <button className="px-4 py-2 text-white bg-blue-500 rounded-lg hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300">
+                  <button
+                    onClick={showModalPagos}
+                    className="px-4 py-2 text-white bg-blue-500 rounded-lg hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300"
+                  >
                     Ver Reportes de Pagos
                   </button>
                 </div>
@@ -197,7 +206,10 @@ export default function Home() {
                   >
                     Ver Ventas Realizadas
                   </button>
-                  <button className="px-4 py-2 text-white bg-blue-500 rounded-lg hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300">
+                  <button
+                    onClick={showModalVentas}
+                    className="px-4 py-2 text-white bg-blue-500 rounded-lg hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300"
+                  >
                     Reportes de Ventas
                   </button>
                 </div>
@@ -222,10 +234,17 @@ export default function Home() {
         </div>
       </div>
 
-      <GeneralReportModal
-        visible={modalVisibleGR}
+      <ReportPagos
+        visible={modalVisiblePagos}
         close={() => {
-          setModalVisibleGR(null);
+          setModalVisiblePagos(null);
+        }}
+      />
+
+      <ReportVentas
+        visible={modalVisibleVentas}
+        close={() => {
+          setModalVisibleVentas(null);
         }}
       />
     </>

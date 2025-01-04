@@ -141,7 +141,7 @@ export type Venta = {
   cliente: Cliente;
   fecha: string;
   solicitante: string;
-  productos: Array<Producto>;
+  productos: Array<ProductoSeleccionado>;
   valorVenta: number;
 };
 

@@ -234,7 +234,7 @@ export const PagosCreate = () => {
                 />
                 <Button
                   onClick={handleAddFactura}
-                  className="text-white bg-blue-400 hover:bg-blue-1000 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-3 text-center mx-2 mb-2 mt-3 dark:focus:ring-blue-900"
+                  className="text-white bg-blue-400 hover:bg-blue-500 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-3 text-center mx-2 mb-2 mt-3 dark:focus:ring-blue-900"
                 >
                   Agregar Factura
                 </Button>
@@ -246,7 +246,7 @@ export const PagosCreate = () => {
 
               {/* Tabla de facturas */}
               <table className="table-auto w-11/12 border-collapse border border-gray-200 rounded-lg shadow-md mx-auto">
-                <thead className="bg-blue-1000 text-white">
+                <thead className="bg-blue-500 text-white">
                   <tr>
                     <th className="border border-gray-200 px-4 py-2 text-left">
                       Proveedor
@@ -301,7 +301,7 @@ export const PagosCreate = () => {
 
               <div className="grid grid-cols-4 gap-4">
                 <Button
-                  className="text-white bg-blue-400 hover:bg-blue-1000 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-3 py-3 text-center mx-5 mb-5 mt-5 dark:focus:ring-blue-900"
+                  className="text-white bg-blue-400 hover:bg-blue-500 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-3 py-3 text-center mx-5 mb-5 mt-5 dark:focus:ring-blue-900"
                   onClick={() => formik.handleSubmit()}
                 >
                   Guardar pago

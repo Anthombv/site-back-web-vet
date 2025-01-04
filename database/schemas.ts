@@ -10,6 +10,7 @@ import {
   Medico,
   Pago,
   Producto,
+  ProductoSeleccionado,
   Usuario,
   Venta,
 } from "../models";
@@ -68,7 +69,7 @@ const UserSchema = new mongoose.Schema<Usuario>(
     nombre: { type: String },
     correo: { type: String },
     identificacion: { type: String },
-    medico: { type: MedicosSchema, unique: true },
+    medico: { type: MedicosSchema },
     telefono: { type: String },
     rol: { type: Number },
     estado: { type: String },
@@ -118,7 +119,7 @@ const ClientSchema = new mongoose.Schema<Cliente>(
     number: { type: Number },
     nombre: { type: String },
     apellidos: { type: String },
-    cedula: { type: String, unique: true },
+    cedula: { type: String},
     fechaNacimiento: { type: String },
     telefono: { type: String },
     correo: { type: String },
@@ -247,13 +248,32 @@ ProductosSchema.set("toJSON", {
 export const ProductoModel =
   mongoose.models.Productos || mongoose.model("Productos", ProductosSchema);
 
+  const ProductosSeleccionadosSchema = new mongoose.Schema<ProductoSeleccionado>(
+    {
+      producto: { type: ProductosSchema },
+      cantidad: { type: Number },
+      total: { type: Number },
+    },
+    { timestamps: true }
+  );
+  
+  // Duplicate the ID field.
+  ProductosSeleccionadosSchema.virtual("id").get(function () {
+    return this._id.toHexString();
+  });
+  
+  // Ensure virtual fields are serialised.
+  ProductosSeleccionadosSchema.set("toJSON", {
+    virtuals: true,
+  });
+
 const VentaSchema = new mongoose.Schema<Venta>(
   {
     number: { type: Number },
     cliente: { type: ClientSchema },
     fecha: { type: String },
     solicitante: { type: String },
-    productos: { type: [ProductosSchema] },
+    productos: { type: [ProductosSeleccionadosSchema] },
     valorVenta: { type: Number },
   },
   { timestamps: true }
@@ -267,7 +287,7 @@ VentaSchema.virtual("id").get(function () {
 // Calculate total from factures.
 VentaSchema.virtual("total").get(function () {
   let total = 0;
-  this.productos.forEach((element: Producto) => (total += element.valor ?? 0));
+  this.productos.forEach((element: ProductoSeleccionado) => (total += element.total ?? 0));
   return total;
 });
 
